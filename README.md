@@ -89,7 +89,103 @@ sudo systemctl restart ssh
 ssh new_user@remote_host
 ``
 
+## _Settig up firewall_
+ If your Ubuntu server has IPv6 enabled, ensure that UFW is configured to support IPv6 so that it will manage firewall rules for IPv6 in addition to IPv4
+```sh
+sudo nano /etc/default/ufw
+```
+
+
+```sh
+# Then make sure the value of IPV6 is yes
+IPV6=yes
+```
+Save and close the file
+
+__Setting up default policies__
+
+```sh
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+```
+
+__Allowing SSH connections__
+
+```sh
+sudo ufw allow ssh
+# sudo ufw allow 22
+```
+
+__Enabling UFW__
+
+```sh
+sudo ufw enable
+```
+
+__Allowing other connections__
+
+Http
+
+```sh
+sudo ufw allow http
+# sudo ufw allow 80
+```
+
+Https
+
+```sh
+sudo ufw allow https
+# sudo ufw allow 443
+```
+
+Subnets
+
+```sh
+sudo ufw allow from 203.0.113.0/24
+# from 203.0.113.1 to 203.0.113.254
+```
+
+Specific IP Address
+
+```sh
+sudo ufw allow from 203.0.113.4
+```
+__Limiting number of connections__
+6 connections during 30 secs are allowed by default
+```sh
+sudo ufw limit ssh/tcp
+```
+
+__Checking UFW status and rules__
+
+```sh
+sudo ufw status verbose
+```
+__Disabling/resetting UFW__
+
+```sh
+sudo ufw disable
+sudo ufw reset
+```
+
+__Enabling UFW logs__
+```sh
+sudo ufw logging on
+# sudo ufw logging low
+# sudo ufw logging medium
+# sudo ufw logging high
+```
+
+> Note: Logs are located in /var/log/ufw.log
+
+__Showing ports we are listening to__
+
+```sh
+sudo ufw show listening
+```
+
 ## Resources
 
 * [Initial Server Setup with Ubuntu](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-0)
 * [How to Set Up SSH Keys on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1804)
+* [How To Set Up a Firewall with UFW on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-18-04)
